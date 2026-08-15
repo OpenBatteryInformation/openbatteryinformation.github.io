@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Open Battery Information - Get started: build the Arduino OBI interface, wire it to your battery, and flash the firmware from your browser.">
+  <title>Get started · Open Battery Information</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <script src="js/theme.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="index.html">Open Battery <span class="accent">Information</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="setup.html" class="active">Get started</a>
+      <a href="firmware/uploader.html">Flash firmware</a>
+      <a href="tool.html">OBI-1</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Get started</h1>
+    <p class="tagline">
+      Build the interface, wire it to a battery, and flash the firmware — then read
+      your pack with OBI-1. Everything runs in your browser.
+    </p>
+    <div class="hero-actions">
+      <a href="#wiring"><button class="primary btn-lg">Jump to the wiring</button></a>
+      <a href="firmware/uploader.html"><button class="btn-lg">Flash the firmware</button></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <h2>What you need</h2>
+      <p class="section-sub">A handful of parts, no soldering required for a first test.</p>
+      <div class="card">
+        <ul class="req-list">
+          <li>
+            <span class="req-icon">🌐</span>
+            <span><span class="req-title">Chrome or Edge on desktop</span>
+            <span class="req-detail">Web Serial is not available in Firefox or Safari, and mobile isn't supported.</span></span>
+          </li>
+          <li>
+            <span class="req-icon">🔌</span>
+            <span><span class="req-title">An Arduino Uno or ESP32-C3 with a USB cable</span>
+            <span class="req-detail">A genuine or compatible Uno with the optiboot bootloader, or an ESP32-C3 SuperMini. The uploader flashes either automatically.</span></span>
+          </li>
+          <li>
+            <span class="req-icon">🔧</span>
+            <span><span class="req-title">A few jumper wires and resistors</span>
+            <span class="req-detail">The Arduino OBI interface is just a one-wire link with two pull-up resistors — see the schematic below.</span></span>
+          </li>
+          <li>
+            <span class="req-icon">🪫</span>
+            <span><span class="req-title">A supported battery</span>
+            <span class="req-detail">Currently the Makita LXT 18 V packs (BL18xx / BL14xx) via the Arduino OBI interface.</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="wiring">
+      <h2>The wiring</h2>
+      <p class="section-sub">The Arduino OBI interface bridges your board's serial port to the battery's one-wire data line.</p>
+      <div class="wiring-grid">
+        <figure class="wiring-figure">
+          <img src="assets/bafb89f4-26f0-451f-9e2a-7f6c2626a874.png" alt="Arduino OBI interface wiring diagram" title="Click to enlarge">
+          <figcaption>The Arduino OBI interface, from the
+            <a href="https://github.com/mnh-jansson/open-battery-information">upstream open-battery-information project</a>.</figcaption>
+        </figure>
+        <div>
+          <h3 class="wiring-heading">Arduino Uno</h3>
+          <table class="wiring-table">
+            <thead>
+              <tr><th>Signal</th><th>Pin</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Data (one-wire)</td><td>D6</td><td>Pulled up to 5 V through the schematic's resistor.</td></tr>
+              <tr><td>Enable (EN)</td><td>D8</td><td>Drives the battery's enable line when a command runs.</td></tr>
+              <tr><td>Power</td><td>5 V / GND</td><td>The interface is powered from the Uno's 5 V rail.</td></tr>
+            </tbody>
+          </table>
+          <h3 class="wiring-heading">ESP32-C3 (SuperMini)</h3>
+          <table class="wiring-table">
+            <thead>
+              <tr><th>Signal</th><th>Pin</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Data (one-wire)</td><td>GPIO1</td><td>Pulled up to 3.3 V — never 5 V.</td></tr>
+              <tr><td>Enable (EN)</td><td>GPIO0</td><td>Drives the battery's enable line.</td></tr>
+              <tr><td>Power</td><td>3.3 V / GND</td><td>The interface is powered from the ESP's 3.3 V rail.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="wiring-battery">
+        On the battery side, connect the interface's <strong>data</strong> and <strong>enable</strong> wires to the
+        corresponding pads of your pack's communication connector (typically labelled D1 and D2) and a common
+        <strong>GND</strong>. Exact pad positions vary between packs — check the upstream documentation for your model.
+      </p>
+      <div class="warning">
+        <h3>⚠️ Read this before you wire anything</h3>
+        <p>
+          On an ESP32-C3 the pull-up resistors must be connected to the <strong>3.3 V</strong> pin — connecting them to
+          5 V will fry the GPIOs and destroy the module.
+        </p>
+        <p>
+          Batteries store a lot of energy. Work with one hand in your pocket, never short the terminals, and double-check
+          every connection before powering anything up. Incorrect wiring can damage the battery or your board.
+        </p>
+        <p>Use this software at your own risk. It is provided as open source (GPL-3.0) with no warranty and is not affiliated with or endorsed by Makita.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Next steps</h2>
+      <p class="section-sub">Once the interface is built and wired, you're minutes away from a diagnosis.</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num"></span>
+          <h3>Flash the firmware</h3>
+          <p>Plug your board into USB and flash the Open Battery Information firmware straight from the browser — no Arduino IDE needed.</p>
+          <p><a class="step-link" href="firmware/uploader.html">Open the uploader →</a></p>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <h3>Connect the board</h3>
+          <p>Open OBI-1, pick your board, and press Connect. It resets and identifies itself automatically.</p>
+          <p><a class="step-link" href="tool.html">Open OBI-1 →</a></p>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <h3>Read the battery</h3>
+          <p>Insert a battery, press Read battery, and see cell voltages, temperatures, charge cycles, and status at a glance.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Open Battery Information</strong> — an open-source web port of the
+      <a href="https://github.com/mnh-jansson/open-battery-information">open-battery-information</a> project.</p>
+    <p>Released under the GPL-3.0 license. Independent project, not affiliated with Makita.</p>
+  </footer>
+
+  <script>
+    (function () {
+      var img = document.querySelector('.wiring-figure img');
+      if (!img) return;
+      var overlay = document.createElement('div');
+      overlay.className = 'lightbox';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-label', 'Enlarged wiring diagram');
+      overlay.hidden = true;
+      var big = document.createElement('img');
+      big.src = img.src;
+      big.alt = img.alt;
+      overlay.appendChild(big);
+      document.body.appendChild(overlay);
+      img.addEventListener('click', function () { overlay.hidden = false; });
+      function close() { overlay.hidden = true; }
+      overlay.addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+</body>
+</html>

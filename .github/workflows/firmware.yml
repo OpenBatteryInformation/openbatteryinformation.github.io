@@ -1,0 +1,40 @@
+name: Fetch Firmware
+
+# The firmware is built by the upstream repository
+# (mnh-jansson/open-battery-information) and attached to its GitHub
+# releases. This workflow simply downloads the latest binaries and commits
+# them here, so the uploader always serves the newest firmware without
+# needing a local PlatformIO toolchain.
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download firmware from the upstream release
+        run: |
+          curl -fL --retry 5 --retry-delay 10 -o firmware/uno.hex \
+            https://github.com/mnh-jansson/open-battery-information/releases/latest/download/uno.hex
+          curl -fL --retry 5 --retry-delay 10 -o firmware/esp32.bin \
+            https://github.com/mnh-jansson/open-battery-information/releases/latest/download/esp32.bin
+
+      - name: Show the upstream release this firmware came from
+        run: |
+          curl -fsSL https://api.github.com/repos/mnh-jansson/open-battery-information/releases/latest \
+            | python3 -c "import json, sys; r = json.load(sys.stdin); print('upstream tag:', r['tag_name'], '| published:', r['published_at'])"
+
+      - name: Commit updated firmware
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'ci: fetch latest ArduinoOBI firmware from upstream release'
+          file_pattern: firmware/uno.hex firmware/esp32.bin

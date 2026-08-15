@@ -1,0 +1,166 @@
+/* Firmware uploader (single-button wizard) styles. */
+.uploader-wrap {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px;
+  flex: 1 1 auto;
+}
+
+.uploader-header { margin-bottom: 20px; }
+.uploader-header h1 { margin: 0 0 4px; font-size: 26px; }
+.uploader-header .subtitle { color: var(--text-dim); margin: 0; }
+
+.flash-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+/* flow steps */
+.flash-flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.flow-item { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+
+.flow-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  background: var(--bg-input);
+  flex: 0 0 auto;
+}
+
+.flow-item .flow-label { font-weight: 600; color: var(--text-dim); font-size: 13px; }
+
+.flow-item.active .flow-dot { border-color: var(--accent); background: var(--accent); color: #0b1220; }
+.flow-item.active .flow-label { color: var(--text); }
+.flow-item.done .flow-dot { border-color: var(--ok); background: var(--ok); color: #0b1220; }
+.flow-item.done .flow-label { color: var(--ok); }
+
+.flow-connector { flex: 1 1 auto; height: 2px; background: var(--border); min-width: 20px; }
+.flow-item.done + .flow-connector { background: var(--ok); }
+
+/* board selector */
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.board-option {
+  display: block;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.board-option:hover { border-color: var(--hover-border); }
+.board-option.selected { border-color: var(--accent); background: var(--row-selected); }
+
+.board-option input { display: none; }
+
+.board-option .board-name { font-weight: 700; display: block; margin-bottom: 4px; }
+.board-option .board-desc { font-size: 12px; color: var(--text-dim); }
+
+/* firmware source */
+.firmware-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.firmware-row .hint { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+
+/* flash area */
+.flash-area { margin-top: 8px; }
+
+.flash-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-height: 40px;
+  margin-bottom: 4px;
+}
+
+.flash-status .status-text { font-size: 15px; font-weight: 600; }
+.flash-status .status-text.err { color: var(--danger); }
+.flash-status .status-text.ok { color: var(--ok); }
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex: 0 0 auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.open-obi-btn {
+  display: block;
+  text-align: center;
+  background: var(--ok);
+  border: 1px solid var(--ok);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 13px 26px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  margin-top: 16px;
+}
+
+.open-obi-btn:hover { background: var(--ok); filter: brightness(1.1); }
+.open-obi-btn[hidden] { display: none; }
+
+/* details / log */
+.advanced {
+  margin-top: 16px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+
+.advanced > summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  user-select: none;
+}
+
+.advanced > summary:hover { color: var(--text); }
+
+.advanced .advanced-body { margin-top: 12px; }
+
+.requirements-note {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.requirements-note a { color: var(--accent); }

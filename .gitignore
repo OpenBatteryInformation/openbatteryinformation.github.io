@@ -1,0 +1,8 @@
+# Local clone of the upstream repo (reference only). The firmware is built
+# by the upstream (mnh-jansson/open-battery-information) and its binaries
+# are fetched into firmware/ by the firmware.yml workflow.
+open-battery-information/
+
+# Local web server / editor noise
+.DS_Store
+Thumbs.db

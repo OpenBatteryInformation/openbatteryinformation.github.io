@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Open Battery Information - OBI-1: read Makita LXT battery packs through an Arduino over Web Serial.">
+  <title>OBI-1 · Open Battery Information</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/tool.css">
+  <script src="js/theme.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="index.html">Open Battery <span class="accent">Information</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="setup.html">Get started</a>
+      <a href="firmware/uploader.html">Flash firmware</a>
+      <a href="tool.html" class="active">OBI-1</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="tool-wrap">
+    <header class="tool-header">
+      <h1>OBI-1</h1>
+      <p class="subtitle">Diagnose your Makita LXT battery pack in three steps.</p>
+    </header>
+
+    <div class="stepper">
+      <div class="step-item active" id="step-1"><span class="step-dot">1</span><span class="step-label">Connect</span></div>
+      <div class="step-connector"></div>
+      <div class="step-item" id="step-2"><span class="step-dot">2</span><span class="step-label">Read battery</span></div>
+      <div class="step-connector"></div>
+      <div class="step-item" id="step-3"><span class="step-dot">3</span><span class="step-label">Results</span></div>
+    </div>
+
+    <div class="wizard-card">
+      <div class="wizard-settings">
+        <div class="field">
+          <label for="module-select">Battery module</label>
+          <select id="module-select"></select>
+        </div>
+        <div class="field">
+          <label for="interface-select">Interface</label>
+          <select id="interface-select"></select>
+        </div>
+        <div class="field">
+          <label class="checkbox" for="reset-check">
+            <input type="checkbox" id="reset-check" checked> Reset board on connect
+          </label>
+        </div>
+      </div>
+
+      <section class="wizard-panel active" id="panel-connect">
+        <h2>Connect the Arduino</h2>
+        <p class="panel-desc">Plug the Arduino into USB (the OBI firmware must already be flashed), then click Connect.</p>
+        <div class="iface-status">
+          <button id="connect-btn" class="primary">Connect</button>
+          <span id="iface-state" class="badge">Not connected</span>
+        </div>
+        <div id="iface-widget"></div>
+      </section>
+
+      <section class="wizard-panel" id="panel-read">
+        <div class="read-step">
+          <div class="read-illustration">🪫</div>
+          <h2>Insert the battery</h2>
+          <p class="panel-desc">Place a battery in the holder so it makes contact with the interface pins.</p>
+          <button id="read-btn" class="primary btn-lg" disabled>Read battery</button>
+          <p class="read-hint" id="read-hint">
+            Reads the model, cell voltages, temperatures, charge count and status in one go.
+          </p>
+        </div>
+      </section>
+
+      <section class="wizard-panel" id="panel-results">
+        <div class="results-toolbar">
+          <span class="summary" id="results-summary">No results yet.</span>
+          <button id="read-again-btn">Read again</button>
+        </div>
+        <div id="module-content"></div>
+      </section>
+    </div>
+
+    <details class="debug-drawer">
+      <summary>Debug log</summary>
+      <div id="debug-text"></div>
+    </details>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/modules/makita_lxt.js"></script>
+  <script src="js/interfaces/arduino_obi.js"></script>
+  <script src="js/obi.js"></script>
+</body>
+</html>

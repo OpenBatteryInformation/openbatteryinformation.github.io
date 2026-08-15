@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Flash the Open Battery Information firmware to an Arduino Uno from your browser using AVRDUDE WebAssembly and Web Serial.">
+  <title>Flash firmware · Open Battery Information</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/uploader.css">
+  <script src="../js/theme.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="../index.html">Open Battery <span class="accent">Information</span></a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../setup.html">Get started</a>
+      <a href="uploader.html" class="active">Flash firmware</a>
+      <a href="../tool.html">OBI-1</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="uploader-wrap">
+    <header class="uploader-header">
+      <h1>Flash the firmware</h1>
+      <p class="subtitle">One click to put the Open Battery Information firmware on your Arduino — no IDE needed.</p>
+    </header>
+
+    <div class="flash-card">
+      <div class="flash-flow">
+        <div class="flow-item active" id="flow-1"><span class="flow-dot">1</span><span class="flow-label">Plug in</span></div>
+        <div class="flow-connector"></div>
+        <div class="flow-item" id="flow-2"><span class="flow-dot">2</span><span class="flow-label">Flash</span></div>
+        <div class="flow-connector"></div>
+        <div class="flow-item" id="flow-3"><span class="flow-dot">3</span><span class="flow-label">Done</span></div>
+      </div>
+
+      <div class="field">
+        <label>Your board</label>
+        <div class="board-grid">
+          <label class="board-option selected">
+            <input type="radio" name="board" value="uno" checked>
+            <span class="board-name">Arduino Uno</span>
+            <span class="board-desc">ATmega328P · optiboot @ 115200 baud</span>
+          </label>
+          <label class="board-option">
+            <input type="radio" name="board" value="esp32c3">
+            <span class="board-name">ESP32-C3</span>
+            <span class="board-desc">SuperMini · esptool @ 115200 baud</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flash-area">
+        <div class="flash-status">
+          <div class="spinner" id="spinner" hidden></div>
+          <span class="status-text" id="status-text">Ready. Plug in your Arduino and press the button.</span>
+        </div>
+        <button id="flash-btn" class="primary btn-lg btn-block">Flash firmware</button>
+        <div class="progress-track"><div class="bar" id="progress-bar"></div></div>
+        <a href="../tool.html" id="open-obi-btn" class="open-obi-btn" hidden>Continue to OBI-1 →</a>
+      </div>
+
+      <details class="advanced">
+        <summary>Advanced</summary>
+        <div class="advanced-body">
+          <div class="field">
+            <label>Firmware image</label>
+            <div class="firmware-row">
+              <label class="checkbox"><input type="radio" name="fw-source" value="bundled" checked>
+                Bundled firmware <span id="bundled-size"></span></label>
+              <label class="checkbox"><input type="radio" name="fw-source" value="local"> Custom .hex file</label>
+              <input type="file" id="hex-file" accept=".hex,.ihex,text/plain,application/octet-stream" disabled>
+            </div>
+            <div class="hint" id="firmware-name">
+              Uses firmware/uno.hex from this site, built automatically from the ArduinoOBI source.
+            </div>
+          </div>
+          <div class="field">
+            <label>Log</label>
+            <div class="log-output" id="log-output"></div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <p class="requirements-note">
+      Works in <b>Chrome or Edge</b> on desktop, over HTTPS or localhost. If something goes wrong,
+      open <b>Advanced</b> for the full log.
+    </p>
+  </div>
+
+  <script type="module" src="uploader.js?v=6"></script>
+</body>
+</html>

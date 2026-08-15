@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Open Battery Information - diagnose and repair locked battery BMS modules from your browser. Flash firmware to an Arduino Uno and read Makita LXT battery packs with Web Serial, no installs.">
+  <title>Open Battery Information</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <script src="js/theme.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="index.html">Open Battery <span class="accent">Information</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="setup.html">Get started</a>
+      <a href="firmware/uploader.html">Flash firmware</a>
+      <a href="tool.html">OBI-1</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Diagnose and repair your battery pack <span class="accent">from the browser</span></h1>
+    <p class="tagline">
+      Open Battery Information lets you talk to the BMS inside locked or dead
+      power-tool batteries — no software to install, nothing to set up. Plug in
+      an Arduino, flash the firmware, and read your battery from any
+      Chromium browser.
+    </p>
+    <div class="hero-actions">
+      <a href="setup.html"><button class="primary btn-lg">Get started</button></a>
+      <a href="tool.html"><button class="btn-lg">Diagnose a battery</button></a>
+    </div>
+    <p class="hero-note">Works in Chrome / Edge on desktop. 100% in your browser — nothing is uploaded anywhere.</p>
+  </header>
+
+  <main>
+    <section class="section">
+      <h2>Why Open Battery Information?</h2>
+      <p class="section-sub">Everything the desktop app does, without the install.</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <span class="icon">🪫</span>
+          <h3>Unlock dead batteries</h3>
+          <p>Read status, charge cycles, and error codes from battery packs whose BMS has locked them out.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">🔌</span>
+          <h3>Web Serial, no drivers</h3>
+          <p>Talks to your Arduino over the Web Serial API. No drivers, no cables beyond USB, no installs.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">🧩</span>
+          <h3>Modular design</h3>
+          <p>Support for more modules and interfaces keeps growing — currently the Makita LXT pack via the Arduino OBI interface.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">🕵️</span>
+          <h3>Private by design</h3>
+          <p>Everything runs locally in your browser tab. No accounts, no telemetry, no data leaves your machine.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>How it works</h2>
+      <p class="section-sub">Three steps from plug-in to diagnosis.</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num"></span>
+          <h3>Set up the hardware</h3>
+          <p>Build the Arduino OBI interface and wire it to your battery, following the <a href="setup.html">wiring guide</a>.</p>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <h3>Connect the board</h3>
+          <p>Open OBI-1, pick your Arduino, and press Connect. The board resets and identifies itself automatically.</p>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <h3>Read the battery</h3>
+          <p>Insert a battery, press Read battery, and see cell voltages, temperatures, charge cycles, and status at a glance.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>What you need</h2>
+      <p class="section-sub">Check these before you start.</p>
+      <div class="card">
+        <ul class="req-list">
+          <li>
+            <span class="req-icon">🌐</span>
+            <span><span class="req-title">Chrome or Edge on desktop</span>
+            <span class="req-detail">Any Chromium-based browser. Web Serial is not available in Firefox or Safari, and mobile isn't supported.</span></span>
+          </li>
+          <li>
+            <span class="req-icon">🔌</span>
+            <span><span class="req-title">An Arduino Uno with a USB cable</span>
+            <span class="req-detail">A genuine or compatible Uno with the optiboot bootloader. The uploader flashes it automatically.</span></span>
+          </li>
+          <li>
+            <span class="req-icon">🪫</span>
+            <span><span class="req-title">A supported battery</span>
+            <span class="req-detail">Currently the Makita LXT 18 V packs (BL18xx / BL14xx) are supported via the Arduino OBI interface.</span></span>
+          </li>
+          <li>
+            <span class="req-icon">🔐</span>
+            <span><span class="req-title">HTTPS or localhost</span>
+            <span class="req-detail">Secure context is required for Web Serial. GitHub Pages provides HTTPS automatically.</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="warning">
+        <h3>⚠️ Read this before you start</h3>
+        <p>
+          This tool reads and, on supported packs, modifies battery BMS data. Batteries store a lot of energy —
+          always follow the upstream project's wiring guide and work safely. Incorrect wiring or use can damage
+          the battery or the Arduino.
+        </p>
+        <p>
+          Use this software at your own risk. It is provided as open source (GPL-3.0) with no warranty. It is an
+          independent project and is not affiliated with or endorsed by Makita.
+        </p>
+        <p>See the <a href="https://github.com/mnh-jansson/open-battery-information">upstream open-battery-information project</a> for hardware details and documentation.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Frequently asked questions</h2>
+      <p class="section-sub">Quick answers to the questions we hear most.</p>
+      <details class="faq">
+        <summary>Is this the same as the desktop app?</summary>
+        <div class="faq-body">
+          Functionally, yes — this is a browser port of the
+          <a href="https://github.com/mnh-jansson/open-battery-information">desktop open-battery-information app</a>.
+          It uses the same Arduino firmware and the same module/interface architecture, so the hardware setup is identical.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>Does my battery data leave my computer?</summary>
+        <div class="faq-body">
+          No. Everything runs locally in your browser tab. There are no servers, no accounts, and no analytics.
+          Web Serial simply passes bytes between your browser and the Arduino over USB.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>Which batteries are supported?</summary>
+        <div class="faq-body">
+          The <strong>Makita LXT</strong> module covers 18 V LXT packs (e.g. BL1815, BL1850, BL1860) and their
+          14.4 V siblings. Other packs can be added as new modules over time.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>Why do I need to flash firmware first?</summary>
+        <div class="faq-body">
+          The Arduino needs the Open Battery Information firmware to talk to the battery BMS. The uploader in this
+          repo flashes it for you in one click — no Arduino IDE or platformio install required.
+        </div>
+      </details>
+      <details class="faq">
+        <summary>Can it repair or re-unlock my battery?</summary>
+        <div class="faq-body">
+          The tool can read and clear error states on supported packs. Whether a pack can be fully recovered depends
+          on why it locked up. See the upstream documentation for what is and isn't possible.
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Open Battery Information</strong> — an open-source web port of the
+      <a href="https://github.com/mnh-jansson/open-battery-information">open-battery-information</a> project.</p>
+    <p>Released under the GPL-3.0 license. Independent project, not affiliated with Makita.</p>
+  </footer>
+</body>
+</html>
