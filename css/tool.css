@@ -269,3 +269,90 @@ table#data-table tbody tr:hover td { background: var(--row-hover); }
 #debug-text .dbg-recv { color: var(--log-ok); }
 #debug-text .dbg-info { color: var(--text-dim); }
 #debug-text .dbg-error { color: var(--log-err); }
+
+/* ============================================================
+   Aurora / glass UI layer: OBI-1 tool (ui-flashy branch).
+   ============================================================ */
+.wizard-card {
+  background: linear-gradient(var(--glass-strong), var(--glass-strong)) padding-box,
+    var(--grad-soft) border-box;
+  border: 1px solid transparent;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 18px 50px -28px var(--glow-1);
+}
+
+.step-connector { background: color-mix(in srgb, var(--border) 85%, transparent); }
+
+.step-item.active .step-dot {
+  background: var(--grad);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 16px var(--glow-1);
+  animation: dot-pulse 2.4s ease-in-out infinite;
+}
+
+.step-item.done .step-dot {
+  background: linear-gradient(120deg, var(--ok), #34d399);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--ok) 55%, transparent);
+}
+
+.step-item.done + .step-connector {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+}
+
+@keyframes dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--glow-1); }
+  50% { box-shadow: 0 0 0 7px transparent; }
+}
+
+.wizard-settings {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.iface-detail .value {
+  background: var(--glass);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.test-group {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.table-wrap {
+  background: var(--glass);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+  box-shadow: 0 12px 30px -22px rgba(0, 0, 0, 0.4);
+}
+
+table#data-table th { background: color-mix(in srgb, var(--bg-input) 82%, transparent); }
+
+.read-step .read-illustration svg {
+  width: 56px;
+  height: 56px;
+  color: var(--accent-2);
+  filter: drop-shadow(0 0 16px var(--glow-1));
+  animation: float-bob 4.5s var(--ease-out) infinite;
+}
+
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+.debug-drawer {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.debug-drawer #debug-text { background: color-mix(in srgb, var(--bg-code) 88%, transparent); }

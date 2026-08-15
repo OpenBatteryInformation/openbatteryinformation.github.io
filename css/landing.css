@@ -310,3 +310,127 @@ details.faq .faq-body a { color: var(--accent); }
   .hero { padding: 40px 16px 32px; }
   .wiring-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   Aurora / glass UI layer: landing page (ui-flashy branch).
+   ============================================================ */
+.hero h1 .accent {
+  background: var(--grad);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: grad-pan 9s linear infinite;
+}
+
+.feature-card,
+.step,
+.wiring-figure {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  box-shadow: 0 12px 30px -22px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.35s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover,
+.step:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--accent-2) 55%, transparent);
+  box-shadow: 0 18px 40px -18px var(--glow-1),
+    0 0 0 1px color-mix(in srgb, var(--accent-2) 20%, transparent);
+}
+
+.feature-card .icon svg {
+  color: var(--accent-2);
+  filter: drop-shadow(0 0 8px var(--glow-1));
+}
+
+.step .step-num {
+  background: var(--grad);
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 18px -6px var(--glow-1);
+}
+
+.warning {
+  background: color-mix(in srgb, var(--feature-tint) 72%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--warn) 45%, transparent);
+  box-shadow: 0 12px 32px -22px rgba(0, 0, 0, 0.4);
+}
+
+.req-list .req-icon svg { color: var(--accent-2); }
+
+.req-list li {
+  border-radius: 8px;
+  padding-left: 4px;
+  transition: background 0.25s ease, padding-left 0.25s ease;
+}
+
+.req-list li:hover {
+  background: color-mix(in srgb, var(--hover-bg) 55%, transparent);
+  padding-left: 8px;
+}
+
+details.faq {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+  transition: border-color 0.25s ease, box-shadow 0.3s ease;
+}
+
+details.faq[open],
+details.faq:hover {
+  border-color: color-mix(in srgb, var(--accent-2) 45%, transparent);
+  box-shadow: 0 10px 26px -18px var(--glow-1);
+}
+
+.wiring-table {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.wiring-figure img { box-shadow: 0 14px 40px -18px rgba(0, 0, 0, 0.55); }
+.wiring-figure figcaption a { color: var(--accent-2); }
+
+/* ---------- Bigger hero (ui-flashy) ---------- */
+.hero {
+  padding: 96px 24px 80px;
+  max-width: 900px;
+}
+
+.hero h1 {
+  font-size: 58px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: 22px;
+}
+
+.hero .tagline {
+  font-size: 20px;
+  line-height: 1.6;
+  max-width: 720px;
+  margin-bottom: 40px;
+}
+
+.hero-actions .btn-lg {
+  min-width: 240px;
+  font-size: 17px;
+  padding: 16px 34px;
+}
+
+.hero-note {
+  margin-top: 26px;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .hero { padding: 56px 16px 44px; }
+  .hero h1 { font-size: 34px; }
+  .hero .tagline { font-size: 17px; }
+}

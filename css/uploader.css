@@ -164,3 +164,92 @@
 }
 
 .requirements-note a { color: var(--accent); }
+
+/* ============================================================
+   Aurora / glass UI layer: firmware uploader (ui-flashy branch).
+   ============================================================ */
+.flash-card {
+  background: linear-gradient(var(--glass-strong), var(--glass-strong)) padding-box,
+    var(--grad-soft) border-box;
+  border: 1px solid transparent;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 18px 50px -28px var(--glow-1);
+}
+
+.flow-connector { background: color-mix(in srgb, var(--border) 85%, transparent); }
+
+.flow-item.active .flow-dot {
+  background: var(--grad);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 14px var(--glow-1);
+  animation: dot-pulse 2.4s ease-in-out infinite;
+}
+
+.flow-item.done .flow-dot {
+  background: linear-gradient(120deg, var(--ok), #34d399);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--ok) 55%, transparent);
+}
+
+.flow-item.done + .flow-connector {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+}
+
+.board-option {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+  transition: transform 0.25s var(--ease-out), border-color 0.25s ease,
+    box-shadow 0.3s ease, background 0.25s ease;
+}
+
+.board-option:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent-2) 55%, transparent);
+}
+
+.board-option.selected {
+  border-color: transparent;
+  background: linear-gradient(
+      color-mix(in srgb, var(--row-selected) 70%, transparent),
+      color-mix(in srgb, var(--row-selected) 70%, transparent)) padding-box,
+    var(--grad-soft) border-box;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-2) 40%, transparent),
+    0 10px 26px -16px var(--glow-1);
+}
+
+.spinner {
+  border-color: color-mix(in srgb, var(--border) 55%, transparent);
+  border-top-color: var(--accent-2);
+  box-shadow: 0 0 10px var(--glow-1);
+}
+
+.open-obi-btn {
+  background: linear-gradient(120deg, var(--ok), #2dd4bf);
+  border: none;
+  box-shadow: 0 10px 26px -12px color-mix(in srgb, var(--ok) 60%, transparent);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.3s ease;
+}
+
+.open-obi-btn:hover {
+  background: linear-gradient(120deg, #34d399, #2dd4bf);
+  filter: none;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px -14px color-mix(in srgb, var(--ok) 70%, transparent);
+}
+
+.advanced {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+@keyframes dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--glow-1); }
+  50% { box-shadow: 0 0 0 7px transparent; }
+}

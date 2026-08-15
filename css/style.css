@@ -344,3 +344,288 @@ label.checkbox {
   padding: 24px;
   flex: 1 1 auto;
 }
+
+/* ============================================================
+   Aurora / glass UI layer (ui-flashy branch, exploratory).
+   Everything above the "Flashy UI" marker below is the original
+   design; this section layers a richer look on top of it.
+   ============================================================ */
+
+:root {
+  --accent-1: #38bdf8;
+  --accent-2: #818cf8;
+  --accent-3: #c084fc;
+  --grad: linear-gradient(120deg, var(--accent-1), var(--accent-2), var(--accent-3));
+  --grad-soft: linear-gradient(120deg, rgba(56, 189, 248, 0.22), rgba(129, 140, 248, 0.22), rgba(192, 132, 252, 0.22));
+  --glass: color-mix(in srgb, var(--bg-elevated) 74%, transparent);
+  --glass-strong: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  --glow-1: rgba(56, 189, 248, 0.35);
+  --glow-2: rgba(192, 132, 252, 0.35);
+  --radius-xl: 16px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] {
+  --accent-1: #0891b2;
+  --accent-2: #4f46e5;
+  --accent-3: #a21caf;
+  --grad-soft: linear-gradient(120deg, rgba(8, 145, 178, 0.16), rgba(79, 70, 229, 0.16), rgba(162, 28, 175, 0.14));
+  --glass: color-mix(in srgb, var(--bg-elevated) 80%, transparent);
+  --glass-strong: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+  --glow-1: rgba(8, 145, 178, 0.22);
+  --glow-2: rgba(162, 28, 175, 0.18);
+}
+
+html { scrollbar-color: var(--hover-border) transparent; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--border), var(--hover-border));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--hover-border); }
+
+::selection { background: color-mix(in srgb, var(--accent-2) 35%, transparent); }
+
+body {
+  background:
+    radial-gradient(90rem 90rem at 110% -10%, var(--glow-2), transparent 60%),
+    radial-gradient(80rem 80rem at -10% 15%, var(--glow-1), transparent 55%),
+    var(--bg);
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.32;
+  pointer-events: none;
+  will-change: transform;
+}
+
+body::before {
+  top: -14vmax;
+  left: -12vmax;
+  background: radial-gradient(circle, var(--accent-1), transparent 62%);
+  animation: aurora-a 28s var(--ease-out) infinite alternate;
+}
+
+body::after {
+  bottom: -16vmax;
+  right: -14vmax;
+  background: radial-gradient(circle, var(--accent-3), transparent 62%);
+  animation: aurora-b 36s var(--ease-out) infinite alternate;
+}
+
+[data-theme="light"] body::before,
+[data-theme="light"] body::after { opacity: 0.2; }
+
+@keyframes aurora-a {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(7vmax, 5vmax) scale(1.18); }
+  100% { transform: translate(-3vmax, 9vmax) scale(0.92); }
+}
+
+@keyframes aurora-b {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-8vmax, -6vmax) scale(1.22); }
+  100% { transform: translate(4vmax, -10vmax) scale(0.9); }
+}
+
+@keyframes grad-pan { to { background-position: 220% 0; } }
+
+/* ---------- Navbar ---------- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--glass-strong);
+  backdrop-filter: blur(14px) saturate(1.5);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.5);
+}
+
+.navbar .brand { font-size: 16px; }
+
+.navbar .brand .accent {
+  background: var(--grad);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: grad-pan 9s linear infinite;
+}
+
+.nav-links a { position: relative; transition: color 0.2s ease; }
+.nav-links a:hover { background: transparent; }
+.nav-links a.active { background: transparent; }
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grad);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after { transform: scaleX(1); }
+
+/* ---------- Buttons ---------- */
+button {
+  transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.25s ease,
+    transform 0.12s ease, color 0.18s ease;
+}
+
+button.primary,
+button.btn-primary {
+  background: var(--grad);
+  background-size: 200% 100%;
+  border: none;
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 22px -8px var(--glow-1);
+  transition: background-position 0.45s ease, box-shadow 0.3s ease, transform 0.15s ease;
+}
+
+button.primary:hover:not(:disabled),
+button.btn-primary:hover:not(:disabled) {
+  background-position: 100% 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 12px 30px -10px var(--glow-2);
+  transform: translateY(-1px);
+}
+
+button.danger {
+  box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--danger) 55%, transparent);
+}
+
+button.success {
+  box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--ok) 55%, transparent);
+}
+
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  justify-content: center;
+}
+
+.theme-toggle:hover:not(:disabled) {
+  border-color: var(--accent-2);
+  color: var(--accent-2);
+  box-shadow: 0 0 14px var(--glow-1);
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: linear-gradient(var(--glass-strong), var(--glass-strong)) padding-box,
+    var(--grad-soft) border-box;
+  border: 1px solid transparent;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 32px -22px rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- Badges ---------- */
+.badge {
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.badge.ok {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ok) 55%, transparent);
+  background: color-mix(in srgb, var(--ok) 12%, transparent);
+}
+
+.badge.busy {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--warn) 55%, transparent);
+  background: color-mix(in srgb, var(--warn) 12%, transparent);
+}
+
+.badge.err {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--danger) 55%, transparent);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+}
+
+/* ---------- Modal ---------- */
+.modal {
+  background: linear-gradient(var(--glass-strong), var(--glass-strong)) padding-box,
+    var(--grad-soft) border-box;
+  border: 1px solid transparent;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 24px 70px -28px var(--glow-1);
+}
+
+/* ---------- Progress ---------- */
+.progress-track { background: color-mix(in srgb, var(--bg-input) 80%, transparent); }
+
+.progress-track .bar {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+  background-size: 220% 100%;
+  box-shadow: 0 0 14px var(--glow-1);
+  animation: grad-pan 2.4s linear infinite;
+}
+
+/* ---------- Log / inputs ---------- */
+.log-output {
+  background: color-mix(in srgb, var(--bg-code) 88%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+select,
+input[type="text"],
+input[type="number"],
+input[type="checkbox"],
+input[type="file"] {
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:focus,
+input:focus { box-shadow: 0 0 0 3px var(--glow-1); }
+
+/* ---------- Reveal-on-scroll (driven by js/reveal.js) ---------- */
+html.js-reveal .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  will-change: opacity, transform;
+}
+
+html.js-reveal .reveal.revealed {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-reveal .reveal { opacity: 1; transform: none; }
+  .navbar .brand .accent,
+  .progress-track .bar,
+  body::before,
+  body::after { animation: none; }
+}
