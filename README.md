@@ -5,7 +5,7 @@ project, hostable entirely on **GitHub Pages**. It provides:
 
 1. **Landing page** (`index.html`) — the project front page: what it does,
    requirements, how to get started, and links to the two tools.
-2. **OBI-1** (`tool.html`) — a browser port of the desktop Tkinter app:
+2. **OBI-1** (`obi.html`) — a browser port of the desktop Tkinter app:
    the Makita LXT module with the Arduino OBI interface, talking to the
    Arduino over the **Web Serial API**.
 3. **Firmware Uploader** (`firmware/uploader.html`) — flashes the
@@ -45,7 +45,7 @@ Open `firmware/uploader.html`:
 
 ### Using OBI-1 tool
 
-Open `tool.html`:
+Open `obi.html`:
 
 1. **Connect** — click **Connect** and pick the serial port of the Arduino
    (or ESP32-C3) running the OBI firmware (9600 baud, with an automatic
@@ -86,7 +86,7 @@ Open `tool.html`:
 | Workflow | What it does |
 | --- | --- |
 | `firmware.yml` | Downloads `uno.hex` + `esp32.bin` from the latest [upstream release](https://github.com/mnh-jansson/open-battery-information/releases) and commits them to `firmware/`. Runs on a schedule and manually via *Actions*. |
-| `pages.yml` | Deploys the static site (`index.html`, `tool.html`, `setup.html`, `css`, `js`, `firmware`, `assets`) to GitHub Pages via `actions/deploy-pages`. |
+| `pages.yml` | Deploys the static site (`index.html`, `obi.html`, `setup.html`, `css`, `js`, `firmware`, `assets`) to GitHub Pages via `actions/deploy-pages`. |
 
 To set up GitHub Pages on your fork: go to **Settings → Pages → Source:
 GitHub Actions**.
