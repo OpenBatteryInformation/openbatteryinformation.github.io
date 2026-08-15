@@ -104,6 +104,4 @@ secure context, so Web Serial works without HTTPS.
 
 ## License
 
-The web app is released under the **GPL-3.0** license (matching the upstream
-project). AVRDUDE is also GPL — see `firmware/AVRDUDE-COPYING` and the
-upstream repositories for details.
+The web app is released under the **GPL-3.0** license. AVRDUDE is also GPL — see `firmware/AVRDUDE-COPYING`.

@@ -71,10 +71,13 @@
 }
 
 .feature-card .icon {
-  font-size: 26px;
-  line-height: 1;
   display: block;
   margin-bottom: 12px;
+}
+
+.feature-card .icon svg {
+  width: 26px;
+  height: 26px;
 }
 
 .feature-card h3 { margin: 0 0 8px; font-size: 16px; }
@@ -132,7 +135,8 @@
 
 .req-list li:last-child { border-bottom: none; }
 
-.req-list .req-icon { font-size: 18px; line-height: 1.4; }
+.req-list .req-icon { display: block; line-height: 0; }
+.req-list .req-icon svg { width: 18px; height: 18px; display: block; margin-top: 2px; }
 .req-list .req-title { font-weight: 700; display: block; }
 .req-list .req-detail { color: var(--text-dim); font-size: 13px; }
 
@@ -252,7 +256,16 @@
   padding: 20px 22px;
 }
 
-.warning h3 { margin: 0 0 10px; color: var(--warn); font-size: 16px; }
+.warning h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: var(--warn);
+  font-size: 16px;
+}
+
+.warning h3 svg { width: 18px; height: 18px; flex-shrink: 0; }
 .warning p { margin: 0 0 10px; color: var(--text); }
 .warning p:last-child { margin-bottom: 0; }
 .warning a { color: var(--accent); }
