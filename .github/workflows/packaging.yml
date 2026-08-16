@@ -14,6 +14,39 @@ permissions:
   contents: write
 
 jobs:
+  bump-version:
+    name: Sync desktop version to tag
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Bump desktop package version
+        working-directory: desktop
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          npm pkg set version="$VERSION"
+          npm install --package-lock-only
+          echo "bumped desktop version to $VERSION"
+
+      - name: Commit and push version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add desktop/package.json desktop/package-lock.json
+          if git diff --cached --quiet; then
+            echo "no version change to commit"
+          else
+            git commit -m "bump desktop version to ${GITHUB_REF_NAME#v} [ci skip]"
+            git push origin HEAD:main
+          fi
+
   build:
     name: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
