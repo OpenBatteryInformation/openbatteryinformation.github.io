@@ -35,21 +35,31 @@
     <p class="tagline">
       Open Battery Information lets you talk to the BMS inside locked or dead
       power-tool batteries — no software to install, nothing to set up. Plug in
-      an Arduino, flash the firmware, and read your battery from any
-      Chromium browser.
+      an Arduino, flash the firmware, and read your battery from
+      Chrome, Edge, Opera or Firefox.
     </p>
     <div class="hero-actions">
       <a href="setup.html"><button class="primary btn-lg">Get started</button></a>
       <a href="obi.html"><button class="btn-lg">Diagnose a battery</button></a>
       <a href="download.html"><button class="btn-lg">Get the desktop app</button></a>
     </div>
-    <p class="hero-note">Works in Chrome / Edge on desktop. 100% in your browser — nothing is uploaded anywhere.</p>
+    <p class="hero-note">Works in Chrome, Edge, Opera and Firefox on desktop. 100% in your browser — nothing is uploaded anywhere.</p>
   </header>
 
   <main>
     <section class="section">
       <h2>Why Open Battery Information?</h2>
-      <p class="section-sub">Everything the desktop app does, without the install.</p>
+      <div class="section-lead">
+        <p>
+          This project aims to provide tools and information about various batteries in order to
+          aid repair. It is very common for manufacturers to lock the BMS when a fault is
+          detected, to protect the device and the user — an important safety feature. So when is
+          it a problem? There is always a chance of false triggering of this protection, or the
+          fault could have been temporary or even repaired. In that case it would be wasteful to
+          throw out a perfectly good BMS just because its software says it is faulty.
+        </p>
+        <p>This is the problem we want to solve.</p>
+      </div>
       <div class="feature-grid">
         <div class="feature-card">
           <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/></svg></span>
@@ -103,8 +113,8 @@
         <ul class="req-list">
           <li>
             <span class="req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span>
-            <span><span class="req-title">Chrome or Edge on desktop</span>
-            <span class="req-detail">Any Chromium-based browser. Web Serial is not available in Firefox or Safari, and mobile isn't supported.</span></span>
+            <span><span class="req-title">Chrome, Edge, Opera or Firefox on desktop</span>
+            <span class="req-detail">Web Serial works in these browsers on desktop (Firefox 151+). Safari isn't supported.</span></span>
           </li>
           <li>
             <span class="req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg></span>

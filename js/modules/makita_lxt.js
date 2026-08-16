@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  const { debug, hexDump, modal, ConnectionError } = OBI.util;
+  const { debug, hexDump, modal, toast, ConnectionError } = OBI.util;
 
   /* Command definitions (start, len, rsp_len, cmd, data...) */
   const MODEL_CMD = [0x01, 0x02, 0x10, 0xcc, 0xdc, 0x0c];
@@ -306,6 +306,7 @@
       try {
         await iface.request(TESTMODE_CMD);
         await iface.request(LEDS_ON_CMD);
+        toast("LED test on — check the battery LEDs");
       } catch (e) {
         modal(
           "Connection Error",
@@ -324,6 +325,7 @@
           await iface.request(TESTMODE_CMD);
         }
         await iface.request(LEDS_OFF_CMD);
+        toast("LED test off");
       } catch (e) {
         modal(
           "Connection Error",
@@ -339,6 +341,7 @@
       try {
         await iface.request(TESTMODE_CMD);
         await iface.request(RESET_ERROR_CMD);
+        toast("Battery errors cleared");
       } catch (e) {
         modal(
           "Connection Error",
@@ -373,7 +376,7 @@
         .join("\n");
       navigator.clipboard
         .writeText(rowsText)
-        .then(() => modal("Copied", "Selected rows have been copied to the clipboard."))
+        .then(() => toast("Rows copied to clipboard"))
         .catch(() => modal("Error", "Could not access the clipboard."));
     }
 

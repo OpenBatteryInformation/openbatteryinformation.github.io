@@ -102,6 +102,16 @@
 
 .wizard-settings .field { margin: 0; flex: 1 1 160px; }
 
+.wizard-settings .field-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wizard-settings .field-row select { width: auto; flex: 1 1 0; }
+.wizard-settings .field-row .hint { margin-top: 0; white-space: nowrap; }
+
 .iface-status {
   display: flex;
   align-items: center;
@@ -109,6 +119,26 @@
   flex-wrap: wrap;
   margin-bottom: 16px;
 }
+
+.warning {
+  background: var(--feature-tint);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+
+.warning h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: var(--warn);
+  font-size: 16px;
+}
+
+.warning p { margin: 0; color: var(--text); line-height: 1.5; }
+.warning a { color: var(--accent); }
 
 .iface-details {
   display: grid;

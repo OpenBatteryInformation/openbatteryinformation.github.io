@@ -149,12 +149,33 @@
     }
   }
 
+  /* ---- Toast notification ---- */
+  let toastContainer = null;
+
+  function toast(message, kind) {
+    if (!toastContainer) {
+      toastContainer = document.createElement("div");
+      toastContainer.className = "toast-container";
+      document.body.appendChild(toastContainer);
+    }
+    const el = document.createElement("div");
+    el.className = "toast" + (kind ? " toast-" + kind : "");
+    el.textContent = message;
+    toastContainer.appendChild(el);
+    setTimeout(() => {
+      el.classList.add("toast-out");
+      el.addEventListener("transitionend", () => el.remove(), { once: true });
+    }, 3000);
+    setTimeout(() => el.remove(), 3800);
+  }
+
   OBI.util = {
     sleep,
     hexByte,
     hexDump,
     debug,
     modal,
+    toast,
     ConnectionError,
     SerialConnection,
   };

@@ -9,6 +9,7 @@
     debug,
     hexDump,
     modal,
+    toast,
     sleep,
     ConnectionError,
     SerialConnection,
@@ -23,12 +24,10 @@
       '<div class="iface-details">' +
       '<div class="iface-detail"><span class="label">Serial port</span>' +
       '<div class="value" id="port-name">No port connected</div></div>' +
-      '<div class="iface-detail"><span class="label">Firmware version</span>' +
-      '<div class="value" id="version-label">-</div></div>' +
       "</div>";
 
     const portNameEl = frame.querySelector("#port-name");
-    const versionLabel = frame.querySelector("#version-label");
+    const versionLabel = document.getElementById("interface-version");
 
     let conn = null; /* SerialConnection */
     let connected = false;
@@ -51,7 +50,7 @@
         modal(
           "Unsupported Browser",
           "Web Serial is not available in this browser.\n\n" +
-            "Use Chrome or Edge on desktop over HTTPS (or localhost)."
+            "Use Chrome, Edge, Opera or Firefox 151+ on desktop over HTTPS (or localhost)."
         );
         return;
       }
@@ -78,12 +77,16 @@
         await conn.start();
 
         portNameEl.textContent = portName(port) + " (9600 baud)";
-        setConnected(true);
         debug.info("Opened serial port: " + portNameEl.textContent);
 
+        connected = true; /* allow request() while we read the version */
+
         const version = await getVersion();
-        versionLabel.textContent = "Version: " + version;
+        versionLabel.textContent = "Firmware version: " + version;
         debug.info("Arduino OBI interface version " + version);
+
+        onConnect(true);
+        toast("Connected to Arduino OBI (firmware " + version + ")");
       } catch (e) {
         try {
           await port.close();
@@ -92,7 +95,7 @@
         }
         setConnected(false);
         portNameEl.textContent = "No port connected";
-        versionLabel.textContent = "-";
+        versionLabel.textContent = "Firmware version: -";
         debug.error("Error opening serial port: " + e.message);
         modal(
           "Connection Error",
@@ -109,7 +112,7 @@
         conn = null;
       }
       setConnected(false);
-      versionLabel.textContent = "-";
+      versionLabel.textContent = "Firmware version: -";
       portNameEl.textContent = "No port connected";
       debug.info("Closed serial port");
     }

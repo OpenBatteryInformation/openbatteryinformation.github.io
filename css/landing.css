@@ -57,6 +57,17 @@
   margin: 0 0 32px;
 }
 
+.section .section-lead {
+  max-width: 720px;
+  margin: 0 auto 32px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  text-align: left;
+}
+
+.section .section-lead p { margin: 0 0 10px; }
+.section .section-lead p:last-child { margin: 0; font-weight: 600; color: var(--text); }
+
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

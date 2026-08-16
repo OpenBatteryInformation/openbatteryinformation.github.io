@@ -52,7 +52,10 @@
         </div>
         <div class="field">
           <label for="interface-select">Interface</label>
-          <select id="interface-select"></select>
+          <div class="field-row">
+            <select id="interface-select"></select>
+            <span class="hint" id="interface-version">Firmware version: -</span>
+          </div>
         </div>
         <div class="field">
           <label class="checkbox" for="reset-check">
@@ -64,6 +67,11 @@
       <section class="wizard-panel active" id="panel-connect">
         <h2>Connect the Arduino</h2>
         <p class="panel-desc">Plug the Arduino into USB (the OBI firmware must already be flashed), then click Connect.</p>
+        <div class="warning" id="serial-warning" hidden>
+          <h3>Web Serial not supported</h3>
+          <p>This browser can't access the serial port, so the browser version of OBI-1 can't connect to the Arduino.
+            Use the <a href="download.html">desktop app</a> instead — it has native serial access and needs no browser setup.</p>
+        </div>
         <div class="iface-status">
           <button id="connect-btn" class="primary">Connect</button>
           <span id="iface-state" class="badge">Not connected</span>

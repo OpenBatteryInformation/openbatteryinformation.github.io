@@ -3,7 +3,7 @@
 (function () {
   "use strict";
 
-  const { debug } = OBI.util;
+  const { debug, toast } = OBI.util;
   const $ = (id) => document.getElementById(id);
 
   const els = {
@@ -13,6 +13,7 @@
     connectBtn: $("connect-btn"),
     ifaceState: $("iface-state"),
     ifaceWidget: $("iface-widget"),
+    serialWarning: $("serial-warning"),
     readBtn: $("read-btn"),
     readHint: $("read-hint"),
     resultsSummary: $("results-summary"),
@@ -115,6 +116,7 @@
     els.readHint.textContent = "Talking to the battery — this takes a few seconds…";
     const ok = await moduleWidget.readBattery();
     if (ok) {
+      toast("Battery read successfully");
       els.readHint.textContent =
         "Battery read successfully. Open the Results step or press Read again to refresh.";
       markStepDone(2);
@@ -157,8 +159,9 @@
   function init() {
     if (!("serial" in navigator)) {
       debug.error(
-        "Web Serial is not available in this browser. Use Chrome or Edge on desktop over HTTPS (or localhost)."
+        "Web Serial is not available in this browser. Use Chrome, Edge, Opera or Firefox 151+ on desktop over HTTPS (or localhost), or the desktop app."
       );
+      if (els.serialWarning) els.serialWarning.hidden = false;
       els.connectBtn.disabled = true;
     }
     const names = Object.keys(OBI.modules).sort();
