@@ -6,7 +6,7 @@
   "main": "main.js",
   "license": "GPL-3.0",
   "author": "Open Battery Information",
-  "homepage": "https://github.com/OpenBatteryInformation/openbatteryinformation.github.io",
+  "homepage": "https://openbatteryinformation.github.io/",
   "dependencies": {
     "serialport": "^12.0.0"
   },
