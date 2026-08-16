@@ -54,6 +54,19 @@ jobs:
         run: npm ci
         working-directory: desktop
 
+      - name: Set version from release tag
+        env:
+          TAG: ${{ inputs.tag != '' && inputs.tag || github.ref_name }}
+        working-directory: desktop
+        run: |
+          VERSION="${TAG#v}"
+          if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            npm pkg set version="$VERSION"
+            echo "Packaging version $VERSION"
+          else
+            echo "No semver tag ($TAG) - keeping package.json version"
+          fi
+
       - name: Build installers
         run: npm run ${{ matrix.script }}
         working-directory: desktop
