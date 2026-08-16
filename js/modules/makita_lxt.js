@@ -229,19 +229,20 @@
 
         const romId = hexDump(response.slice(2, 10));
         const rawMsg = hexDump(response.slice(10, 42));
-        const swapped = [nibbleSwap(response[37]), nibbleSwap(response[36])];
+        const swapped = [nibbleSwap(response[36]), nibbleSwap(response[37])];
         const chargeCount = (((swapped[0] << 8) | swapped[1]) & 0x0fff) >>> 0;
         const lockNibble = response[30] & 0x0f;
         const errorByte = response[29];
         const lockStatus = lockNibble > 0 ? "LOCKED" : "UNLOCKED";
 
         const pad2 = (b) => (b & 0xff).toString(10).padStart(2, "0");
+        const hex2 = (b) => (b & 0xff).toString(16).toUpperCase().padStart(2, "0");
         insertBatteryData({
           "ROM ID": romId,
           "Battery message": rawMsg,
           "Charge count*": chargeCount,
           "State": lockStatus,
-          "Status code": pad2(errorByte),
+          "Status code": hex2(errorByte),
           "Manufacturing date":
             pad2(response[4]) + "/" + pad2(response[3]) + "/20" + pad2(response[2]),
           "Capacity": (nibbleSwap(response[26]) / 10).toFixed(1) + "Ah",
