@@ -23,11 +23,13 @@ jobs:
         include:
           - os: windows-latest
             script: dist:win
+            env: { CSC_IDENTITY_AUTO_DISCOVERY: "true" }
           - os: macos-latest
             script: dist:mac
             env: { CSC_IDENTITY_AUTO_DISCOVERY: "false" }
           - os: ubuntu-latest
             script: dist:linux
+            env: { CSC_IDENTITY_AUTO_DISCOVERY: "true" }
 
     steps:
       - name: Checkout
@@ -53,15 +55,26 @@ jobs:
         working-directory: desktop
 
       - name: Build installers
-        env: ${{ matrix.env }}
         run: npm run ${{ matrix.script }}
         working-directory: desktop
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: ${{ matrix.env.CSC_IDENTITY_AUTO_DISCOVERY }}
+
+      - name: List release artifacts
+        shell: bash
+        working-directory: desktop
+        run: ls -la release
 
       - name: Upload installers
         uses: actions/upload-artifact@v4
         with:
           name: installers-${{ matrix.os }}
-          path: desktop/release/*.{exe,dmg,zip,AppImage,deb}
+          path: |
+            desktop/release/*.exe
+            desktop/release/*.dmg
+            desktop/release/*.zip
+            desktop/release/*.AppImage
+            desktop/release/*.deb
           if-no-files-found: error
 
   release:
@@ -80,5 +93,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event_name == 'push' && github.ref_name || inputs.tag }}
-          files: artifacts/*.{exe,dmg,zip,AppImage,deb}
+          files: |
+            artifacts/*.exe
+            artifacts/*.dmg
+            artifacts/*.zip
+            artifacts/*.AppImage
+            artifacts/*.deb
           generate_release_notes: true
