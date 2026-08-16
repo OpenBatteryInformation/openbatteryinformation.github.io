@@ -91,6 +91,7 @@ jobs:
         env:
           TAG: ${{ inputs.tag != '' && inputs.tag || github.ref_name }}
         working-directory: desktop
+        shell: bash
         run: |
           VERSION="${TAG#v}"
           if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
