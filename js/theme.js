@@ -44,3 +44,26 @@
     });
   });
 })();
+
+/* Responsive navbar: toggle the burger menu on small screens. */
+(function () {
+  document.addEventListener("DOMContentLoaded", function () {
+    var navbar = document.querySelector(".navbar");
+    var toggle = document.getElementById("nav-toggle");
+    if (!navbar || !toggle) return;
+    toggle.addEventListener("click", function () {
+      var open = navbar.classList.toggle("nav-open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+    });
+    navbar.addEventListener("click", function (e) {
+      if (!navbar.classList.contains("nav-open")) return;
+      var link = e.target.closest && e.target.closest("a");
+      if (link) {
+        navbar.classList.remove("nav-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Open navigation menu");
+      }
+    });
+  });
+})();

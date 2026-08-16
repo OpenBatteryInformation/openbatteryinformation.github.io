@@ -344,6 +344,57 @@ label.checkbox {
   height: 24px;
 }
 
+/* Burger toggle (hidden on desktop, shown on small screens) */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.nav-toggle:hover { border-color: var(--accent-2); color: var(--accent-2); }
+
+.nav-toggle svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 860px) {
+  .nav-toggle { display: inline-flex; }
+
+  .nav-links {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    display: none;
+    background: var(--glass-strong);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.55);
+    padding: 8px 12px 14px;
+  }
+
+  .navbar.nav-open .nav-links { display: flex; }
+
+  .nav-links a { padding: 12px 12px; }
+
+  .nav-links .theme-toggle,
+  .nav-links a.nav-icon { align-self: flex-end; margin-top: 6px; }
+}
+
 /* Sun icon (shown in dark mode: clicking switches to light) / moon for light. */
 .theme-toggle .icon-moon { display: none; }
 .theme-toggle .icon-sun { display: block; }
