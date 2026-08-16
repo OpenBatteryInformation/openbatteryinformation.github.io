@@ -1,0 +1,43 @@
+appId: org.openbatteryinformation.desktop
+productName: Open Battery Information
+copyright: "Copyright © 2026 Open Battery Information — GPL-3.0"
+
+directories:
+  output: release
+
+files:
+  - main.js
+  - preload.js
+  - preload-picker.js
+  - site/**/*
+
+asar: true
+
+asarUnpack:
+  - "**/*.node"
+
+win:
+  target:
+    - nsis
+  artifactName: "Open-Battery-Information-${version}-setup-${arch}.${ext}"
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  shortcutName: Open Battery Information
+
+mac:
+  target:
+    - dmg
+    - zip
+  category: public.app-category.utilities
+  artifactName: "Open-Battery-Information-${version}-mac-${arch}.${ext}"
+
+linux:
+  target:
+    - AppImage
+    - deb
+  category: Utility
+  maintainer: Open Battery Information
+  artifactName: "Open-Battery-Information-${version}-linux-${arch}.${ext}"

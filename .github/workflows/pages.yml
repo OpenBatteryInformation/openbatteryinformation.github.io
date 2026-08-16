@@ -27,7 +27,7 @@ jobs:
       - name: Stage web files
         run: |
           mkdir -p _site
-          cp -r index.html obi.html setup.html css js firmware assets _site/
+          cp -r index.html obi.html setup.html download.html css js firmware assets _site/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

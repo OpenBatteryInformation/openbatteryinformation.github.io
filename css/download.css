@@ -1,0 +1,44 @@
+/* Download page styles. */
+.download-grid {
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+}
+
+.download-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 6px;
+}
+
+.download-card .icon {
+  margin: 0 auto;
+}
+
+.download-card h3 { margin-top: 4px; }
+
+.download-btn {
+  margin-top: auto;
+  padding: 10px 18px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.download-meta {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.download-asset { font-family: var(--font-mono, monospace); }
+
+@media (max-width: 760px) {
+  .download-grid { grid-template-columns: 1fr; }
+}

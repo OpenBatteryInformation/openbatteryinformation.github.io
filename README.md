@@ -55,7 +55,7 @@ Open `obi.html`:
    in one go. LED tests and error reset work on supported batteries.
 
 > **Warning:** This tool talks to battery BMS hardware. Use at your own risk —
-> see the upstream project's documentation and the GPL license.
+> see the upstream project's documentation and the MIT license.
 
 ## How it works
 
@@ -86,7 +86,8 @@ Open `obi.html`:
 | Workflow | What it does |
 | --- | --- |
 | `firmware.yml` | Downloads `uno.hex` + `esp32.bin` from the latest [upstream release](https://github.com/mnh-jansson/open-battery-information/releases) and commits them to `firmware/`. Runs on a schedule and manually via *Actions*. |
-| `pages.yml` | Deploys the static site (`index.html`, `obi.html`, `setup.html`, `css`, `js`, `firmware`, `assets`) to GitHub Pages via `actions/deploy-pages`. |
+| `pages.yml` | Deploys the static site (`index.html`, `obi.html`, `setup.html`, `download.html`, `css`, `js`, `firmware`, `assets`) to GitHub Pages via `actions/deploy-pages`. |
+| `packaging.yml` | Builds the desktop app (Electron) for Windows, macOS and Linux and attaches the installers to a GitHub release. Runs on a `v*` tag push or manually via *Actions*. |
 
 To set up GitHub Pages on your fork: go to **Settings → Pages → Source:
 GitHub Actions**.
@@ -102,6 +103,76 @@ python3 -m http.server 8000
 Then open `http://localhost:8000` in Chrome/Edge. `localhost` counts as a
 secure context, so Web Serial works without HTTPS.
 
+## Desktop app
+
+The OBI-1 page is also packaged as a self-contained **Electron** app for
+Windows, macOS and Linux. The bundle contains only the OBI-1 page (no landing
+page, no firmware uploader), and serial access uses the native
+[`serialport`](https://serialport.io) package in the main process instead of
+the browser Web Serial API — the renderer reaches it over IPC through a
+`navigator.serial` shim, so the OBI code itself is unchanged.
+
+Everything lives in `desktop/`:
+
+- `main.js` — Electron main process; loads `site/obi.html` and owns the
+  serial ports (`serialport`), including a small serial-port picker dialog.
+- `preload.js` / `preload-picker.js` — IPC bridges (context-isolated).
+- `serial-shim.js` — renderer-side `navigator.serial` implementation backed
+  by the native serial ports.
+- `scripts/prepare-site.mjs` — builds `desktop/site/` from the repo's
+  `obi.html` (trims the nav to the theme toggle, injects the serial shim) and
+  copies only the assets that page uses.
+- `electron-builder.yml` — build config (Windows NSIS, macOS DMG + zip,
+  Linux AppImage + deb).
+
+Build installers locally:
+
+```sh
+cd desktop
+npm install
+npm run dist              # current platform
+npm run dist:win          # Windows installer
+npm run dist:mac          # macOS DMG + zip
+npm run dist:linux        # Linux AppImage + deb
+```
+
+Run from source without packaging:
+
+```sh
+cd desktop
+npm install
+npm start
+```
+
+Installers for tagged releases are built automatically in CI and attached to
+GitHub releases — see the [Download](download.html) page. The macOS build is
+not notarized; right-click → Open on first launch.
+
 ## License
 
-The web app is released under the **GPL-3.0** license. AVRDUDE is also GPL — see `firmware/AVRDUDE-COPYING`.
+The web app is released under the **GPL-3.0** license. It is a port of the
+[open-battery-information](https://github.com/mnh-jansson/open-battery-information)
+project, which is MIT licensed and is included here under its original terms:
+
+> Copyright (c) 2024 Martin Jansson
+>
+> Permission is hereby granted, free of charge, to any person obtaining
+> a copy of this software and associated documentation files (the
+> "Software"), to deal in the Software without restriction, including
+> without limitation the rights to use, copy, modify, merge, publish,
+> distribute, sublicense, and/or sell copies of the Software, and to
+> permit persons to whom the Software is furnished to do so, subject to
+> the following conditions:
+>
+> The above copyright notice and this permission notice shall be
+> included in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+> EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+> MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+> NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+> LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+> OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+> WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+AVRDUDE is also GPL — see `firmware/AVRDUDE-COPYING`.
