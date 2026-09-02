@@ -59,7 +59,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 body {
@@ -742,3 +742,18 @@ html.js-reveal .reveal.revealed {
   body::before,
   body::after { animation: none; }
 }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-elevated);
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: auto;
+}
+
+.site-footer p { margin: 4px 0; }
+.site-footer a { color: var(--accent); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }

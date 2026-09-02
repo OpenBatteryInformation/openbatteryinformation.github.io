@@ -301,21 +301,6 @@ details.faq summary::-webkit-details-marker { color: var(--text-dim); }
 details.faq .faq-body { color: var(--text-dim); margin-top: 10px; font-size: 14px; }
 details.faq .faq-body a { color: var(--accent); }
 
-/* ---------- Footer ---------- */
-.site-footer {
-  border-top: 1px solid var(--border);
-  background: var(--bg-elevated);
-  padding: 28px 24px;
-  text-align: center;
-  color: var(--text-dim);
-  font-size: 13px;
-  margin-top: auto;
-}
-
-.site-footer p { margin: 4px 0; }
-.site-footer a { color: var(--accent); text-decoration: none; }
-.site-footer a:hover { text-decoration: underline; }
-
 @media (max-width: 640px) {
   .hero h1 { font-size: 32px; }
   .hero { padding: 40px 16px 32px; }
