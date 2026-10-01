@@ -31,7 +31,7 @@
   </nav>
 
   <header class="hero">
-    <h1>Diagnose and repair <span class="accent">Makita LXT</span> battery packs from the browser</h1>
+    <h1>Diagnose and repair your battery packs from the browser</h1>
     <p class="tagline">
       Open Battery Information lets you talk to the BMS inside locked or dead power-tool batteries.
     </p>
@@ -130,61 +130,6 @@
           </li>
         </ul>
       </div>
-    </section>
-
-    <section class="section">
-      <div class="warning">
-        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Understand the limits</h3>
-        <p>
-          This project currently supports <strong>Makita LXT 18 V / 14.4 V packs only</strong>, read over the
-          one-wire protocol. Other batteries are not supported yet — laptop and other tool batteries that use
-          I2C are out of scope for now.
-        </p>
-        <p>
-          See the <a href="https://github.com/mnh-jansson/open-battery-information">upstream open-battery-information project</a> for hardware details, documentation, and wiring guides for your specific pack model.
-        </p>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Frequently asked questions</h2>
-      <p class="section-sub">Quick answers to the questions we hear most.</p>
-      <details class="faq">
-        <summary>Is this the same as the desktop app?</summary>
-        <div class="faq-body">
-          Functionally, yes — this is a browser port of the
-          <a href="https://github.com/mnh-jansson/open-battery-information">desktop open-battery-information app</a>.
-          It uses the same Arduino firmware and the same module/interface architecture, so the hardware setup is identical.
-        </div>
-      </details>
-      <details class="faq">
-        <summary>Does my battery data leave my computer?</summary>
-        <div class="faq-body">
-          No. Everything runs locally in your browser tab. There are no servers, no accounts, and no analytics.
-          Web Serial simply passes bytes between your browser and the Arduino over USB.
-        </div>
-      </details>
-      <details class="faq">
-        <summary>Which batteries are supported?</summary>
-        <div class="faq-body">
-          The <strong>Makita LXT</strong> module covers 18 V LXT packs (e.g. BL1815, BL1850, BL1860) and their
-          14.4 V siblings. Other packs can be added as new modules over time.
-        </div>
-      </details>
-      <details class="faq">
-        <summary>Why do I need to flash firmware first?</summary>
-        <div class="faq-body">
-          The Arduino needs the Open Battery Information firmware to talk to the battery BMS. The uploader in this
-          repo flashes it for you in one click — no Arduino IDE or platformio install required.
-        </div>
-      </details>
-      <details class="faq">
-        <summary>Can it repair or re-unlock my battery?</summary>
-        <div class="faq-body">
-          The tool can read and clear error states on supported packs. Whether a pack can be fully recovered depends
-          on why it locked up. See the upstream documentation for what is and isn't possible.
-        </div>
-      </details>
     </section>
   </main>
 
