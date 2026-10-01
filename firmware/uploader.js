@@ -5,7 +5,7 @@
    The wasm serial layer was rewritten (see avrdude.js glue) to talk to the
    port directly on the main thread — no worker, no SharedArrayBuffer, so no
    cross-origin isolation is required. */
-import avrdudeModule from "./avrdude.js?v=6";
+import avrdudeModule from "./avrdude.js?v=7";
 
 const $ = (id) => document.getElementById(id);
 
@@ -24,11 +24,23 @@ const els = {
   flowItems: { 1: $("flow-1"), 2: $("flow-2"), 3: $("flow-3") },
 };
 
+/* The ATmega328P bootloader speed can't be read from the host, and it differs
+   between the two optiboot generations: the current bootloader answers at
+   115200 baud, while older Nanos shipped with a 57600 baud one. The firmware
+   image is the same for both, so the uploader just tries each speed in turn. */
+const BOOTLOADER_BAUDS = [115200, 57600];
+
+/* Log lines avrdude only prints once the bootloader actually answered, used to
+   tell "wrong baud" apart from "flash went wrong". Deliberately matches only
+   post-handshake output — the failure paths mention stk500 too, e.g.
+   "stk500_sync(): timeout", so a bare "stk500" would look like success. */
+const SYNCED_RE = /hw-VID|Vtarget:|Part status|device signature|parity ok|PROGRAMMING|VERIFYING/i;
+
 const BOARD = {
   uno: {
-    kind: "avrdude", part: "atmega328p", programmer: "arduino", baud: 115200,
+    kind: "avrdude", part: "atmega328p", programmer: "arduino", bauds: BOOTLOADER_BAUDS,
     image: "uno.hex",
-    note: "Uses firmware/uno.hex from this site, built automatically from the ArduinoOBI source.",
+    note: "Uses firmware/uno.hex from this site, built automatically from the ArduinoOBI source. The same image works for the Uno and for the ATmega328P Nano — the uploader tries the current 115200 baud bootloader first, then the old 57600 baud one.",
   },
   esp32c3: {
     kind: "esptool", image: "esp32.bin",
@@ -308,24 +320,70 @@ async function flashAvrdude(board) {
     "l-info"
   );
 
-  const args = [
-    "avrdude",
-    "-v",
-    "-p", board.part,
-    "-c", board.programmer,
-    "-C", "/tmp/avrdude.conf",
-    "-b", String(board.baud),
-    "-D",
-    "-P", "/dev/null",
-    "-U", "flash:w:/tmp/firmware.hex:i",
-  ].join(" ");
+  const startAvrdude = funcs.cwrap("startAvrdude", "number", ["string"]);
+  const bauds = board.bauds || [board.baud];
+  const tried = [];
 
-  setStatus("Flashing your board — don't unplug it…", "busy");
   window.avrdudeLog = [];
   startLogPolling();
 
-  const startAvrdude = funcs.cwrap("startAvrdude", "number", ["string"]);
-  const rc = await withTimeout(startAvrdude(args), 120000);
+  let rc = 1;
+  for (let i = 0; i < bauds.length; i++) {
+    const baud = bauds[i];
+    const isLast = i === bauds.length - 1;
+    tried.push(baud);
+
+    /* avrdude closes the port when it exits and the wasm glue drops
+       window.activePort with it. navigator.serial.requestPort() needs a fresh
+       user gesture by then, so hand back the port the user already granted —
+       the glue redoes the 1200 baud touch and reopens it at the new speed. */
+    if (i > 0 && myPort) window.activePort = myPort;
+
+    const logFrom = (window.avrdudeLog || []).length;
+    setStatus(
+      "Flashing at " + baud.toLocaleString() + " baud" +
+        (bauds.length > 1 ? " (attempt " + (i + 1) + " of " + bauds.length + ")" : "") +
+        " — don't unplug it…",
+      "busy"
+    );
+
+    const args = [
+      "avrdude",
+      "-v",
+      "-p", board.part,
+      "-c", board.programmer,
+      "-C", "/tmp/avrdude.conf",
+      "-b", String(baud),
+      "-D",
+      "-P", "/dev/null",
+      "-U", "flash:w:/tmp/firmware.hex:i",
+    ].join(" ");
+
+    rc = await withTimeout(startAvrdude(args), 120000);
+    if (rc === 0 || isLast) break;
+
+    /* Only fall back to the other speed when the bootloader stayed silent —
+       once it has identified itself the baud is right and the real problem is
+       something else (verify mismatch, wrong board, unplugged cable, …). */
+    const attemptLog = (window.avrdudeLog || []).slice(logFrom).join("\n");
+    if (SYNCED_RE.test(attemptLog)) {
+      appendLog(
+        "The bootloader answered at " + baud.toLocaleString() +
+          " baud, so this is not a baud rate problem — not retrying at another speed.",
+        "l-err"
+      );
+      break;
+    }
+    if (!myPort) {
+      appendLog("No granted serial port to reuse, so the other baud rate cannot be tried.", "l-warn");
+      break;
+    }
+    appendLog(
+      "No bootloader response at " + baud.toLocaleString() + " baud — retrying at " +
+        bauds[i + 1].toLocaleString() + " baud (older optiboot).",
+      "l-warn"
+    );
+  }
 
   stopLogPolling();
 
@@ -339,7 +397,11 @@ async function flashAvrdude(board) {
   } else {
     setProgress(0);
     setStatus("Flash failed (exit code " + rc + "). Open Advanced for the log.", "err");
-    appendLog("AVRDUDE exited with code " + rc + ". Check the log above.", "l-err");
+    appendLog(
+      "AVRDUDE exited with code " + rc + " after trying " +
+        tried.map((b) => b.toLocaleString()).join(" and ") + " baud. Check the log above.",
+      "l-err"
+    );
   }
 }
 
@@ -476,7 +538,7 @@ els.hexFile.addEventListener("change", () => {
 
 /* ---------- init ---------- */
 (async function init() {
-  appendLog("Uploader build v6 — direct Web Serial (no worker).", "l-ok");
+  appendLog("Uploader build v7 — direct Web Serial (no worker).", "l-ok");
   if (hasWebSerial()) {
     appendLog("Web Serial is available.", "l-ok");
   } else {
