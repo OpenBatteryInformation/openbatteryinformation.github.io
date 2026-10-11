@@ -305,7 +305,7 @@ async function flash() {
 }
 
 async function flashAvrdude(board) {
-  const funcs = await ensureAvrdude();
+  let funcs = await ensureAvrdude();
 
   setStatus("Preparing the firmware image…", "busy");
   const firmware = await getFirmware();
@@ -320,7 +320,6 @@ async function flashAvrdude(board) {
     "l-info"
   );
 
-  const startAvrdude = funcs.cwrap("startAvrdude", "number", ["string"]);
   const bauds = board.bauds || [board.baud];
   const tried = [];
 
@@ -332,6 +331,19 @@ async function flashAvrdude(board) {
     const baud = bauds[i];
     const isLast = i === bauds.length - 1;
     tried.push(baud);
+
+    /* AVRDUDE calls exit() when it fails, which aborts the wasm runtime — that
+       instance can't be run again (a second call would misparse argv and try to
+       open a libserialport device). Each retry therefore releases the serial
+       port the dead instance left locked, spins up a fresh AVRDUDE instance,
+       and writes the firmware/config back into its virtual filesystem. */
+    if (i > 0) {
+      await closeActiveSerialPort();
+      avrdudeModulePromise = null;
+      funcs = await ensureAvrdude();
+      writeWasmFiles(funcs, confText, firmware.text);
+    }
+    const startAvrdude = funcs.cwrap("startAvrdude", "number", ["string"]);
 
     /* avrdude closes the port when it exits and the wasm glue drops
        window.activePort with it. navigator.serial.requestPort() needs a fresh
@@ -466,14 +478,13 @@ async function flashEsp32() {
   }
 }
 
-function closeActiveSerialPort() {
+async function closeActiveSerialPort() {
   const port = window.activePort;
   window.activePort = null;
-  if (!port) return;
   try {
     if (window.__rxReader) {
       try {
-        window.__rxReader.cancel().catch(() => {});
+        await window.__rxReader.cancel();
       } catch (e) {
         /* ignore */
       }
@@ -488,7 +499,13 @@ function closeActiveSerialPort() {
       window.__rxWriter = null;
     }
     if (window.__rxQueue) window.__rxQueue.length = 0;
-    if (port.readable || port.writable) port.close().catch(() => {});
+    if (port && (port.readable || port.writable)) {
+      try {
+        await port.close();
+      } catch (e) {
+        /* ignore */
+      }
+    }
   } catch (e) {
     /* ignore */
   }
@@ -538,7 +555,7 @@ els.hexFile.addEventListener("change", () => {
 
 /* ---------- init ---------- */
 (async function init() {
-  appendLog("Uploader build v7 — direct Web Serial (no worker).", "l-ok");
+  appendLog("Uploader build v8 — direct Web Serial (no worker).", "l-ok");
   if (hasWebSerial()) {
     appendLog("Web Serial is available.", "l-ok");
   } else {
