@@ -6,7 +6,7 @@ project, hostable entirely on **GitHub Pages**. It provides:
 1. **Landing page** (`index.html`) — the project front page: what it does,
    requirements, how to get started, and links to the two tools.
 2. **OBI-1** (`obi.html`) — a browser port of the desktop Tkinter app:
-   the Makita LXT module with the Arduino OBI interface, talking to the
+   the LXT module with the Arduino OBI interface, talking to the
    Arduino over the **Web Serial API**.
 3. **Firmware Uploader** (`firmware/uploader.html`) — flashes the
    Open Battery Information firmware to an **Arduino Uno** straight from the

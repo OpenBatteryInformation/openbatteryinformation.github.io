@@ -1,4 +1,4 @@
-/* Makita LXT module, ported from the Python desktop app (modules/makita_lxt.py).
+/* LXT module, ported from the Python desktop app (modules/lxt.py).
    The widget renders the results table and function-test buttons; the host
    page drives the reading via readBattery(). */
 (function () {
@@ -416,8 +416,8 @@
     };
   }
 
-  OBI.modules["makita_lxt"] = {
-    getDisplayName: () => "Makita LXT",
+  OBI.modules["lxt"] = {
+    getDisplayName: () => "LXT",
     createWidget,
   };
 })();

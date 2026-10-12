@@ -555,7 +555,7 @@ els.hexFile.addEventListener("change", () => {
 
 /* ---------- init ---------- */
 (async function init() {
-  appendLog("Uploader build v8 — direct Web Serial (no worker).", "l-ok");
+  appendLog("Uploader build v8 — direct Web Serial.", "l-ok");
   if (hasWebSerial()) {
     appendLog("Web Serial is available.", "l-ok");
   } else {

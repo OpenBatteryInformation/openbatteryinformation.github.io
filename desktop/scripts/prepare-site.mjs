@@ -42,7 +42,7 @@ for (const file of CSS_FILES) {
 for (const file of JS_FILES) {
   await cp(path.join(ROOT, 'js', file), path.join(SITE, 'js', file));
 }
-await cp(path.join(ROOT, 'js', 'modules', 'makita_lxt.js'), path.join(SITE, 'js', 'modules', 'makita_lxt.js'));
+await cp(path.join(ROOT, 'js', 'modules', 'lxt.js'), path.join(SITE, 'js', 'modules', 'lxt.js'));
 await cp(path.join(ROOT, 'js', 'interfaces', 'arduino_obi.js'), path.join(SITE, 'js', 'interfaces', 'arduino_obi.js'));
 await cp(path.resolve(__dirname, '..', 'serial-shim.js'), path.join(SITE, 'js', 'serial-shim.js'));
 

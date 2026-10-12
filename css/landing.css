@@ -118,7 +118,7 @@
   height: 30px;
   border-radius: 50%;
   background: var(--accent);
-  color: #0b1220;
+  color: #fff;
   font-weight: 800;
   font-size: 15px;
   margin-bottom: 12px;
@@ -308,16 +308,36 @@ details.faq .faq-body a { color: var(--accent); }
 }
 
 /* ============================================================
-   Aurora / glass UI layer: landing page (ui-flashy branch).
+   Workshop UI layer (see design.md).
    ============================================================ */
 .hero h1 .accent {
-  background: var(--grad);
-  background-size: 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: grad-pan 9s linear infinite;
+  color: var(--accent);
 }
+
+.hero h1 {
+  font-family: "Saira", "Figtree", sans-serif;
+  font-weight: 700;
+}
+
+.section h2 {
+  font-family: "Saira", "Figtree", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+
+.section h2::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: var(--accent);
+  margin: 14px auto 0;
+}
+
+.section-sub { letter-spacing: 0.02em; }
 
 .feature-card,
 .step,
